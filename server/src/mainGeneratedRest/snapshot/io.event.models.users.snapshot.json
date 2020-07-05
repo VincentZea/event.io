@@ -1,0 +1,101 @@
+{
+  "models" : [ {
+    "type" : "enum",
+    "name" : "Gender",
+    "namespace" : "io.event.models",
+    "symbols" : [ "MALE", "FEMALE", "OTHER" ]
+  }, {
+    "type" : "record",
+    "name" : "Location",
+    "namespace" : "io.event.models",
+    "fields" : [ {
+      "name" : "postalCode",
+      "type" : "int",
+      "optional" : true
+    }, {
+      "name" : "address",
+      "type" : "string",
+      "optional" : true
+    }, {
+      "name" : "city",
+      "type" : "string"
+    }, {
+      "name" : "state",
+      "type" : "string"
+    }, {
+      "name" : "country",
+      "type" : "string"
+    } ]
+  }, {
+    "type" : "typeref",
+    "name" : "Time",
+    "namespace" : "io.event.models",
+    "ref" : "long"
+  }, {
+    "type" : "record",
+    "name" : "User",
+    "namespace" : "io.event.models",
+    "fields" : [ {
+      "name" : "id",
+      "type" : "long"
+    }, {
+      "name" : "userName",
+      "type" : "string"
+    }, {
+      "name" : "firstName",
+      "type" : "string"
+    }, {
+      "name" : "lastName",
+      "type" : "string"
+    }, {
+      "name" : "gender",
+      "type" : "Gender",
+      "optional" : true
+    }, {
+      "name" : "email",
+      "type" : "string",
+      "optional" : true
+    }, {
+      "name" : "phoneNumber",
+      "type" : "string",
+      "optional" : true
+    }, {
+      "name" : "description",
+      "type" : "string",
+      "optional" : true
+    }, {
+      "name" : "birthday",
+      "type" : "Time",
+      "optional" : true
+    }, {
+      "name" : "location",
+      "type" : "Location"
+    } ]
+  } ],
+  "schema" : {
+    "name" : "users",
+    "namespace" : "io.event.models",
+    "path" : "/users",
+    "schema" : "io.event.models.User",
+    "doc" : "generated from: io.event.impl.UsersResource",
+    "collection" : {
+      "identifier" : {
+        "name" : "userId",
+        "type" : "long"
+      },
+      "supports" : [ "create", "get", "partial_update", "update" ],
+      "methods" : [ {
+        "method" : "create"
+      }, {
+        "method" : "get"
+      }, {
+        "method" : "update"
+      }, {
+        "method" : "partial_update"
+      } ],
+      "entity" : {
+        "path" : "/users/{userId}"
+      }
+    }
+  }
+}

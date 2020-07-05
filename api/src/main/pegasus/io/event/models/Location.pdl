@@ -1,0 +1,9 @@
+namespace io.event.models
+
+record Location {
+  postalCode: optional int
+  address: optional string 
+  city: string
+  state: string
+  country: string
+}

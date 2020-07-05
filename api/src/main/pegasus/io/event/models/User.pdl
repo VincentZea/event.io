@@ -1,0 +1,14 @@
+namespace io.event.models
+
+record User {
+  id: long
+  userName: string
+  firstName: string
+  lastName: string
+  gender: optional Gender
+  email: optional string
+  phoneNumber: optional string
+  description: optional string
+  birthday: optional Time
+  location: Location
+}

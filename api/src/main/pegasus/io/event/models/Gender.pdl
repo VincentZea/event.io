@@ -1,0 +1,7 @@
+namespace io.event.models
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
