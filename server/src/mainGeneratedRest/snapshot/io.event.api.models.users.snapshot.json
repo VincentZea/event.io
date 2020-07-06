@@ -2,12 +2,12 @@
   "models" : [ {
     "type" : "enum",
     "name" : "Gender",
-    "namespace" : "io.event.models",
+    "namespace" : "io.event.api.models",
     "symbols" : [ "MALE", "FEMALE", "OTHER" ]
   }, {
     "type" : "record",
     "name" : "Location",
-    "namespace" : "io.event.models",
+    "namespace" : "io.event.api.models",
     "fields" : [ {
       "name" : "postalCode",
       "type" : "int",
@@ -29,12 +29,12 @@
   }, {
     "type" : "typeref",
     "name" : "Time",
-    "namespace" : "io.event.models",
+    "namespace" : "io.event.api.models",
     "ref" : "long"
   }, {
     "type" : "record",
     "name" : "User",
-    "namespace" : "io.event.models",
+    "namespace" : "io.event.api.models",
     "fields" : [ {
       "name" : "id",
       "type" : "long"
@@ -74,10 +74,10 @@
   } ],
   "schema" : {
     "name" : "users",
-    "namespace" : "io.event.models",
+    "namespace" : "io.event.api.models",
     "path" : "/users",
-    "schema" : "io.event.models.User",
-    "doc" : "generated from: io.event.impl.UsersResource",
+    "schema" : "io.event.api.models.User",
+    "doc" : "generated from: io.event.api.resources.UsersResource",
     "collection" : {
       "identifier" : {
         "name" : "userId",
@@ -92,6 +92,28 @@
         "method" : "update"
       }, {
         "method" : "partial_update"
+      } ],
+      "finders" : [ {
+        "name" : "findLikedUsers",
+        "parameters" : [ {
+          "name" : "eventId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      }, {
+        "name" : "findRegisteredUsers",
+        "parameters" : [ {
+          "name" : "eventId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      }, {
+        "name" : "findSavedUsers",
+        "parameters" : [ {
+          "name" : "eventId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
       } ],
       "entity" : {
         "path" : "/users/{userId}"

@@ -1,3 +1,0 @@
-namespace io.event.models
-
-typeref Time = long

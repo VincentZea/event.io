@@ -1,16 +1,34 @@
 apply plugin: 'pegasus'
+apply plugin: 'war'
 
-ext.apiProject = project(':api')
+ext.apiProject = project(':model')
 
 dependencies {
-    compile project(path: ':api', configuration: 'dataTemplate')
-    compile spec.product.pegasus.restliServer
-    compile spec.product.pegasus.restliNettyStandalone
+  compile project(path: ':model', configuration: 'dataTemplate')
+  compile spec.product.pegasus.restliServer
+  compile spec.product.pegasus.restliNettyStandalone
+  compile spec.product.pegasus.restliSpringBridge
+  compile externalDependency.logbackClassic
+  compile externalDependency.logbackCore
 }
 
-task startUsersServer(type: JavaExec) {
-    main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
-    args = ['-port', '8080', '-packages', 'io.event.impl']
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
+configurations {
+  jetty8
+}
+
+dependencies {
+  jetty8 "org.mortbay.jetty:jetty-runner:8.1.15.v20140411"
+}
+
+task JettyRunWar(type: JavaExec) {
+  main = "org.mortbay.jetty.runner.Runner"
+  args = [war.archivePath]
+  classpath configurations.jetty8
+}
+
+task startServer(type: JavaExec) {
+  main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
+  args = ['-port', '8080', '-packages', 'io.event.impl']
+  classpath = sourceSets.main.runtimeClasspath
+  standardInput = System.in
 }

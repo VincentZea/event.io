@@ -10,3 +10,6 @@ Run `gradle idea` and open the repo (or the event.io.ipr file) in IntelliJ IDEA
 
 ## Build & Run
 
+## Resources
+
+Rest.li: https://linkedin.github.io/rest.li/

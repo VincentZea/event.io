@@ -1,0 +1,7 @@
+namespace io.event.api.models
+
+enum EventStatus {
+  ACTIVE
+  CANCELED
+  COMPLETED
+}

@@ -1,0 +1,15 @@
+namespace io.event.api.models
+
+record Event {
+  id: long
+  description: string
+  category: string
+  isFree: boolean
+  status: EventStatus
+  startTime: Time
+  endTime: Time
+  location: optional Location
+  link: optional string
+  organizerId: long
+  capacity: int
+}

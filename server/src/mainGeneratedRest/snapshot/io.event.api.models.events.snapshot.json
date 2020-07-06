@@ -1,0 +1,127 @@
+{
+  "models" : [ {
+    "type" : "record",
+    "name" : "Event",
+    "namespace" : "io.event.api.models",
+    "fields" : [ {
+      "name" : "id",
+      "type" : "long"
+    }, {
+      "name" : "description",
+      "type" : "string"
+    }, {
+      "name" : "category",
+      "type" : "string"
+    }, {
+      "name" : "isFree",
+      "type" : "boolean"
+    }, {
+      "name" : "status",
+      "type" : {
+        "type" : "enum",
+        "name" : "EventStatus",
+        "symbols" : [ "ACTIVE", "CANCELED", "COMPLETED" ]
+      }
+    }, {
+      "name" : "startTime",
+      "type" : {
+        "type" : "typeref",
+        "name" : "Time",
+        "ref" : "long"
+      }
+    }, {
+      "name" : "endTime",
+      "type" : "Time"
+    }, {
+      "name" : "location",
+      "type" : {
+        "type" : "record",
+        "name" : "Location",
+        "fields" : [ {
+          "name" : "postalCode",
+          "type" : "int",
+          "optional" : true
+        }, {
+          "name" : "address",
+          "type" : "string",
+          "optional" : true
+        }, {
+          "name" : "city",
+          "type" : "string"
+        }, {
+          "name" : "state",
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "type" : "string"
+        } ]
+      },
+      "optional" : true
+    }, {
+      "name" : "link",
+      "type" : "string",
+      "optional" : true
+    }, {
+      "name" : "organizerId",
+      "type" : "long"
+    }, {
+      "name" : "capacity",
+      "type" : "int"
+    } ]
+  }, "io.event.api.models.EventStatus", "io.event.api.models.Location", "io.event.api.models.Time" ],
+  "schema" : {
+    "name" : "events",
+    "namespace" : "io.event.api.models",
+    "path" : "/events",
+    "schema" : "io.event.api.models.Event",
+    "doc" : "generated from: io.event.api.resources.EventsResource",
+    "collection" : {
+      "identifier" : {
+        "name" : "eventId",
+        "type" : "long"
+      },
+      "supports" : [ "create", "get", "partial_update", "update" ],
+      "methods" : [ {
+        "method" : "create"
+      }, {
+        "method" : "get"
+      }, {
+        "method" : "update"
+      }, {
+        "method" : "partial_update"
+      } ],
+      "finders" : [ {
+        "name" : "findLikedEvents",
+        "parameters" : [ {
+          "name" : "userId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      }, {
+        "name" : "findOrganizedEvents",
+        "parameters" : [ {
+          "name" : "userId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      }, {
+        "name" : "findRegisteredEvents",
+        "parameters" : [ {
+          "name" : "userId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      }, {
+        "name" : "findSavedEvents",
+        "parameters" : [ {
+          "name" : "userId",
+          "type" : "long"
+        } ],
+        "pagingSupported" : true
+      } ],
+      "entity" : {
+        "path" : "/events/{eventId}"
+      }
+    }
+  }
+}

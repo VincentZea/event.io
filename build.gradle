@@ -25,9 +25,15 @@ ext.spec = [
       'restliTools' : 'com.linkedin.pegasus:restli-tools:' + pegasusVersion,
       'gradlePlugins' : 'com.linkedin.pegasus:gradle-plugins:' + pegasusVersion,
       'restliNettyStandalone' : 'com.linkedin.pegasus:restli-netty-standalone:' + pegasusVersion,
-      'restliServerStandalone' : 'com.linkedin.pegasus:restli-server-standalone:' + pegasusVersion
+      'restliServerStandalone' : 'com.linkedin.pegasus:restli-server-standalone:' + pegasusVersion,
+      'restliSpringBridge' : 'com.linkedin.pegasus:restli-spring-bridge:'+pegasusVersion
     ]
   ]
+]
+
+ext.externalDependency = [
+    'logbackClassic': 'ch.qos.logback:logback-classic:1.0.13',
+    'logbackCore': 'ch.qos.logback:logback-core:1.0.13'
 ]
 
 allprojects {

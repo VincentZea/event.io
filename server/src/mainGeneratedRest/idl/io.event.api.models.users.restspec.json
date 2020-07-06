@@ -1,0 +1,48 @@
+{
+  "name" : "users",
+  "namespace" : "io.event.api.models",
+  "path" : "/users",
+  "schema" : "io.event.api.models.User",
+  "doc" : "generated from: io.event.api.resources.UsersResource",
+  "collection" : {
+    "identifier" : {
+      "name" : "userId",
+      "type" : "long"
+    },
+    "supports" : [ "create", "get", "partial_update", "update" ],
+    "methods" : [ {
+      "method" : "create"
+    }, {
+      "method" : "get"
+    }, {
+      "method" : "update"
+    }, {
+      "method" : "partial_update"
+    } ],
+    "finders" : [ {
+      "name" : "findLikedUsers",
+      "parameters" : [ {
+        "name" : "eventId",
+        "type" : "long"
+      } ],
+      "pagingSupported" : true
+    }, {
+      "name" : "findRegisteredUsers",
+      "parameters" : [ {
+        "name" : "eventId",
+        "type" : "long"
+      } ],
+      "pagingSupported" : true
+    }, {
+      "name" : "findSavedUsers",
+      "parameters" : [ {
+        "name" : "eventId",
+        "type" : "long"
+      } ],
+      "pagingSupported" : true
+    } ],
+    "entity" : {
+      "path" : "/users/{userId}"
+    }
+  }
+}

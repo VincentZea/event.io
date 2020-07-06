@@ -1,4 +1,4 @@
-namespace io.event.models
+namespace io.event.api.models
 
 record User {
   id: long
