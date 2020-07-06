@@ -3,4 +3,4 @@
 *.ipr
 *.iws
 */build
-api/src/mainGeneratedDataTemplate
+model/src/mainGeneratedDataTemplate
