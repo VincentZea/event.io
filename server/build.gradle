@@ -7,28 +7,26 @@ dependencies {
   compile project(path: ':model', configuration: 'dataTemplate')
   compile spec.product.pegasus.restliServer
   compile spec.product.pegasus.restliNettyStandalone
-  compile spec.product.pegasus.restliSpringBridge
-  compile externalDependency.logbackClassic
-  compile externalDependency.logbackCore
+  compile spec.product.pegasus.restliGuiceBridge
 }
 
 configurations {
-  jetty8
+  jetty9
 }
 
 dependencies {
-  jetty8 "org.mortbay.jetty:jetty-runner:8.1.15.v20140411"
+  jetty9 "org.eclipse.jetty:jetty-runner:9.3.28.v20191105"
 }
 
 task JettyRunWar(type: JavaExec) {
-  main = "org.mortbay.jetty.runner.Runner"
+  main = "org.eclipse.jetty.runner.Runner"
   args = [war.archivePath]
-  classpath configurations.jetty8
+  classpath configurations.jetty9
 }
 
 task startServer(type: JavaExec) {
   main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
-  args = ['-port', '8080', '-packages', 'io.event.impl']
+  args = ['-port', '8080', '-packages', 'io.event.api.resources']
   classpath = sourceSets.main.runtimeClasspath
   standardInput = System.in
 }

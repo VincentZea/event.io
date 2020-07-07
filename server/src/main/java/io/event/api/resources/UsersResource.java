@@ -9,12 +9,17 @@ import com.linkedin.restli.server.annotations.PagingContextParam;
 import com.linkedin.restli.server.annotations.QueryParam;
 import com.linkedin.restli.server.annotations.RestLiCollection;
 import com.linkedin.restli.server.resources.CollectionResourceTemplate;
+import io.event.api.impl.UsersMgr;
 import io.event.api.models.User;
 
+import javax.inject.Inject;
 import java.util.List;
 
 @RestLiCollection(name = "users", namespace = "io.event.api.models", keyName = "userId")
 public class UsersResource extends CollectionResourceTemplate<Long, User> {
+
+  @Inject
+  public UsersMgr _usersMgr;
 
   @Override
   public User get(Long key) {
