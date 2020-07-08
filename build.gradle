@@ -27,6 +27,9 @@ ext.spec = [
       'restliNettyStandalone' : 'com.linkedin.pegasus:restli-netty-standalone:' + pegasusVersion,
       'restliServerStandalone' : 'com.linkedin.pegasus:restli-server-standalone:' + pegasusVersion,
       'restliGuiceBridge' : 'com.linkedin.pegasus:restli-guice-bridge:' + pegasusVersion
+    ],
+    'postgresql' : [
+      'jdbcDriver' : 'org.postgresql:postgresql:42.2.14'
     ]
   ]
 ]

@@ -8,6 +8,7 @@ dependencies {
   compile spec.product.pegasus.restliServer
   compile spec.product.pegasus.restliNettyStandalone
   compile spec.product.pegasus.restliGuiceBridge
+  compile spec.product.postgresql.jdbcDriver
 }
 
 configurations {
@@ -18,7 +19,7 @@ dependencies {
   jetty9 "org.eclipse.jetty:jetty-runner:9.3.28.v20191105"
 }
 
-task JettyRunWar(type: JavaExec) {
+task deploy(type: JavaExec) {
   main = "org.eclipse.jetty.runner.Runner"
   args = [war.archivePath]
   classpath configurations.jetty9

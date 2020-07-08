@@ -3,6 +3,7 @@ package io.event.api.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.name.Names;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.linkedin.r2.filter.CompressionConfig;
@@ -13,6 +14,8 @@ import com.linkedin.r2.filter.compression.ServerCompressionFilter;
 import com.linkedin.r2.filter.logging.SimpleLoggingFilter;
 import com.linkedin.restli.server.RestLiConfig;
 import com.linkedin.restli.server.guice.GuiceRestliServlet;
+import io.event.api.db.PostgresqlDB;
+import io.event.api.db.UsersDB;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 
@@ -29,9 +32,23 @@ public class GuiceServletConfig extends GuiceServletContextListener {
             bind(RestLiConfig.class).toInstance(restLiConfig);
 
             FilterChain filterChain = FilterChains.createRestChain(
-                new ServerCompressionFilter(new EncodingType[] { EncodingType.SNAPPY }, new CompressionConfig(THRESHOLD)),
+                new ServerCompressionFilter(new EncodingType[]{EncodingType.SNAPPY}, new CompressionConfig(THRESHOLD)),
                 new SimpleLoggingFilter());
             bind(FilterChain.class).toInstance(filterChain);
+          }
+        },
+        new AbstractModule() {
+          @Override
+          protected void configure() {
+            bind(String.class).annotatedWith(Names.named("PostgresqlDBUrl")).toInstance("jdbc:postgresql://localhost:5433/event.io");
+            bind(String.class).annotatedWith(Names.named("PostgresqlDBUser")).toInstance("postgres");
+            bind(String.class).annotatedWith(Names.named("PostgresqlDBPassword")).toInstance("password");
+          }
+        },
+        new AbstractModule() {
+          @Override
+          protected void configure() {
+            bind(UsersDB.class).to(PostgresqlDB.class);
           }
         },
         new ServletModule() {

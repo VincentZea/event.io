@@ -1,7 +1,6 @@
 namespace io.event.api.models
 
 record User {
-  id: long
   userName: string
   firstName: string
   lastName: string

@@ -9,15 +9,13 @@
       "name" : "userId",
       "type" : "long"
     },
-    "supports" : [ "create", "get", "partial_update", "update" ],
+    "supports" : [ "create", "get", "update" ],
     "methods" : [ {
       "method" : "create"
     }, {
       "method" : "get"
     }, {
       "method" : "update"
-    }, {
-      "method" : "partial_update"
     } ],
     "finders" : [ {
       "name" : "findLikedUsers",

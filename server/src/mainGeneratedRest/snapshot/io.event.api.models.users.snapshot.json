@@ -3,7 +3,7 @@
     "type" : "enum",
     "name" : "Gender",
     "namespace" : "io.event.api.models",
-    "symbols" : [ "MALE", "FEMALE", "OTHER" ]
+    "symbols" : [ "MALE", "FEMALE" ]
   }, {
     "type" : "record",
     "name" : "Location",
@@ -36,9 +36,6 @@
     "name" : "User",
     "namespace" : "io.event.api.models",
     "fields" : [ {
-      "name" : "id",
-      "type" : "long"
-    }, {
       "name" : "userName",
       "type" : "string"
     }, {
@@ -83,15 +80,13 @@
         "name" : "userId",
         "type" : "long"
       },
-      "supports" : [ "create", "get", "partial_update", "update" ],
+      "supports" : [ "create", "get", "update" ],
       "methods" : [ {
         "method" : "create"
       }, {
         "method" : "get"
       }, {
         "method" : "update"
-      }, {
-        "method" : "partial_update"
       } ],
       "finders" : [ {
         "name" : "findLikedUsers",
