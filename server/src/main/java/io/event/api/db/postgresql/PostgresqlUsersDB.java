@@ -1,8 +1,8 @@
-package io.event.api.db;
+package io.event.api.db.postgresql;
 
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import com.linkedin.data.template.SetMode;
+import io.event.api.db.UsersDB;
 import io.event.api.models.Gender;
 import io.event.api.models.Location;
 import io.event.api.models.User;
@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.Optional;
 
 @Singleton
-public class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
+public final class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
 
   @Inject
   public PostgresqlUsersDB(
@@ -29,7 +29,7 @@ public class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
 
       preparedStatement.setLong(1, userId);
       ResultSet rs = preparedStatement.executeQuery();
-      return constructUserFromDBQuery(rs);
+      return rs.next() ? constructUserFromDBQuery(rs) : null;
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
@@ -66,37 +66,6 @@ public class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private User constructUserFromDBQuery(ResultSet rs) throws SQLException {
-    User user = null;
-    if (rs.next()) {
-      user = new User();
-      user.setUserName(rs.getString(USER_TABLE_USER_NAME_COLUMN));
-      user.setFirstName(rs.getString(USER_TABLE_FIRST_NAME_COLUMN));
-      user.setLastName(rs.getString(USER_TABLE_LAST_NAME_COLUMN));
-      user.setGender(Optional.ofNullable(rs.getString(USER_TABLE_GENDER_COLUMN)).map(Gender::valueOf).orElse(null),
-          SetMode.REMOVE_OPTIONAL_IF_NULL);
-      user.setEmail(rs.getString(USER_TABLE_EMAIL_COLUMN), SetMode.REMOVE_OPTIONAL_IF_NULL);
-      user.setPhoneNumber(rs.getString(USER_TABLE_PHONE_NUMBER_COLUMN), SetMode.REMOVE_OPTIONAL_IF_NULL);
-      user.setDescription(rs.getString(USER_TABLE_DESCRIPTION_COLUMN), SetMode.REMOVE_OPTIONAL_IF_NULL);
-      user.setBirthday(Optional.ofNullable(rs.getDate(USER_TABLE_BIRTHDAY_COLUMN)).map(Date::getTime).orElse(null),
-          SetMode.REMOVE_OPTIONAL_IF_NULL);
-
-      String[] locationParts = rs.getString(USER_TABLE_LOCATION_COLUMN).split(LOCATION_COLUMN_DELIMITER);
-      Location location = new Location()
-          .setCountry(locationParts[0])
-          .setState(locationParts[1])
-          .setCity(locationParts[2]);
-      if (locationParts.length > 3) {
-        location.setAddress(locationParts[3]);
-      }
-      if (locationParts.length > 4) {
-        location.setPostalCode(Integer.valueOf(locationParts[4]));
-      }
-      user.setLocation(location);
-    }
-    return user;
   }
 
   private void setDBQueryParametersFromUser(PreparedStatement preparedStatement, User user) throws SQLException {

@@ -1,0 +1,7 @@
+namespace io.event.api.models
+
+record UserEventRelation {
+  registered: boolean = false
+  liked: boolean = false
+  saved: boolean = false
+}

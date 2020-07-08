@@ -7,17 +7,21 @@ import com.linkedin.restli.server.annotations.PagingContextParam;
 import com.linkedin.restli.server.annotations.QueryParam;
 import com.linkedin.restli.server.annotations.RestLiCollection;
 import com.linkedin.restli.server.resources.CollectionResourceTemplate;
+import io.event.api.db.UserEventRelationsDB;
 import io.event.api.db.UsersDB;
 import io.event.api.models.User;
 
 import javax.inject.Inject;
 import java.util.List;
 
-@RestLiCollection(name = "users", namespace = "io.event.api.models", keyName = "userId")
+@RestLiCollection(name = "users", namespace = "io.event.api.models", keyName = RestliConstants.USER_KEY)
 public class UsersResource extends CollectionResourceTemplate<Long, User> {
 
   @Inject
   public UsersDB _usersDB;
+
+  @Inject
+  public UserEventRelationsDB _userEventRelationsDB;
 
   @Override
   public User get(Long userId) {
@@ -32,21 +36,33 @@ public class UsersResource extends CollectionResourceTemplate<Long, User> {
   public List<User> findRegisteredUsers(
       @PagingContextParam PagingContext context,
       @QueryParam("eventId") Long eventId) {
-    throw new RoutingException("'findRegisteredUsers' not implemented", 400);
+    try {
+      return _userEventRelationsDB.findRegisteredUsers(eventId);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 
   @Finder("findLikedUsers")
   public List<User> findLikedUsers(
       @PagingContextParam PagingContext context,
       @QueryParam("eventId") Long eventId) {
-    throw new RoutingException("'findLikedUsers' not implemented", 400);
+    try {
+      return _userEventRelationsDB.findLikedUsers(eventId);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 
   @Finder("findSavedUsers")
   public List<User> findSavedUsers(
       @PagingContextParam PagingContext context,
       @QueryParam("eventId") Long eventId) {
-    throw new RoutingException("'findSavedUsers' not implemented", 400);
+    try {
+      return _userEventRelationsDB.findSavedUsers(eventId);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 
   @Override

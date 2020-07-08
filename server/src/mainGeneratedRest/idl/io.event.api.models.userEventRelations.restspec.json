@@ -1,0 +1,26 @@
+{
+  "name" : "userEventRelations",
+  "namespace" : "io.event.api.models",
+  "path" : "/userEventRelations",
+  "schema" : "io.event.api.models.UserEventRelation",
+  "doc" : "generated from: io.event.api.resources.UserEventRelationsResource",
+  "association" : {
+    "identifier" : "userEventRelationsId",
+    "assocKeys" : [ {
+      "name" : "eventId",
+      "type" : "long"
+    }, {
+      "name" : "userId",
+      "type" : "long"
+    } ],
+    "supports" : [ "get", "update" ],
+    "methods" : [ {
+      "method" : "get"
+    }, {
+      "method" : "update"
+    } ],
+    "entity" : {
+      "path" : "/userEventRelations/{userEventRelationsId}"
+    }
+  }
+}

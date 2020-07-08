@@ -1,15 +1,17 @@
-package io.event.api.db;
+package io.event.api.db.postgresql;
 
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import com.linkedin.data.template.SetMode;
+import io.event.api.db.EventsDB;
 import io.event.api.models.*;
 
 import javax.inject.Inject;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
-public class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
+public final class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
 
   @Inject
   public PostgresqlEventsDB(
@@ -26,7 +28,7 @@ public class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
 
       preparedStatement.setLong(1, eventId);
       ResultSet rs = preparedStatement.executeQuery();
-      return constructEventFromDBQuery(rs);
+      return rs.next() ? constructEventFromDBQuery(rs) : null;
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
@@ -65,38 +67,21 @@ public class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
     }
   }
 
-  private Event constructEventFromDBQuery(ResultSet rs) throws SQLException {
-    Event event = null;
-    if (rs.next()) {
-      event = new Event();
-      event.setDescription(rs.getString(EVENT_TABLE_DESCRIPTION_COLUMN));
-      event.setCategory(rs.getString(EVENT_TABLE_CATEGORY_COLUMN));
-      event.setFree(rs.getBoolean(EVENT_TABLE_FREE_COLUMN));
-      event.setStatus(EventStatus.valueOf(rs.getString(EVENT_TABLE_STATUS_COLUMN)));
-      event.setStartTime(rs.getTimestamp(EVENT_TABLE_START_TIME_COLUMN).getTime());
-      event.setEndTime(rs.getTimestamp(EVENT_TABLE_END_TIME_COLUMN).getTime());
+  @Override
+  public List<Event> findOrganizedEvents(long organizerId) {
+    try (Connection conn = connect();
+         PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_ORGANIZED_EVENTS)) {
 
-      String locationStr = rs.getString(EVENT_TABLE_LOCATION_COLUMN);
-      if (locationStr != null) {
-        String[] locationParts = locationStr.split(LOCATION_COLUMN_DELIMITER);
-        Location location = new Location()
-            .setCountry(locationParts[0])
-            .setState(locationParts[1])
-            .setCity(locationParts[2]);
-        if (locationParts.length > 3) {
-          location.setAddress(locationParts[3]);
-        }
-        if (locationParts.length > 4) {
-          location.setPostalCode(Integer.valueOf(locationParts[4]));
-        }
-        event.setLocation(location);
+      preparedStatement.setLong(1, organizerId);
+      ResultSet rs = preparedStatement.executeQuery();
+      List<Event> events = new ArrayList<>();
+      while (rs.next()) {
+        events.add(constructEventFromDBQuery(rs));
       }
-
-      event.setLink(rs.getString(EVENT_TABLE_LINK_COLUMN), SetMode.REMOVE_OPTIONAL_IF_NULL);
-      event.setOrganizerId(rs.getLong(EVENT_TABLE_ORGANIZER_ID_COLUMN));
-      event.setCapacity(rs.getInt(EVENT_TABLE_CAPACITY_COLUMN));
+      return events;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
-    return event;
   }
 
   private void setDBQueryParametersFromEvent(PreparedStatement preparedStatement, Event event) throws SQLException {
