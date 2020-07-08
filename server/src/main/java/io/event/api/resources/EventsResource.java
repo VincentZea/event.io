@@ -1,15 +1,16 @@
 package io.event.api.resources;
 
-import com.linkedin.restli.common.PatchRequest;
+import com.linkedin.restli.common.HttpStatus;
 import com.linkedin.restli.server.CreateResponse;
 import com.linkedin.restli.server.PagingContext;
+import com.linkedin.restli.server.RestLiServiceException;
 import com.linkedin.restli.server.UpdateResponse;
 import com.linkedin.restli.server.annotations.Finder;
 import com.linkedin.restli.server.annotations.PagingContextParam;
 import com.linkedin.restli.server.annotations.QueryParam;
 import com.linkedin.restli.server.annotations.RestLiCollection;
 import com.linkedin.restli.server.resources.CollectionResourceTemplate;
-import io.event.api.impl.EventsMgr;
+import io.event.api.db.EventsDB;
 import io.event.api.models.Event;
 
 import javax.inject.Inject;
@@ -19,11 +20,15 @@ import java.util.List;
 public class EventsResource extends CollectionResourceTemplate<Long, Event> {
 
   @Inject
-  public EventsMgr _eventsMgr;
+  public EventsDB _eventsDB;
 
   @Override
-  public Event get(Long key) {
-    return new Event().setDescription("This is an event.");
+  public Event get(Long eventId) {
+    try {
+      return _eventsDB.get(eventId);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 
   @Finder("findOrganizedEvents")
@@ -55,17 +60,21 @@ public class EventsResource extends CollectionResourceTemplate<Long, Event> {
   }
 
   @Override
-  public CreateResponse create(Event entity) {
-    return super.create(entity);
+  public CreateResponse create(Event event) {
+    try {
+      return new CreateResponse(_eventsDB.create(event));
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 
   @Override
-  public UpdateResponse update(Long key, Event entity) {
-    return super.update(key, entity);
-  }
-
-  @Override
-  public UpdateResponse update(Long key, PatchRequest<Event> patch) {
-    return super.update(key, patch);
+  public UpdateResponse update(Long eventId, Event event) {
+    try {
+      _eventsDB.update(eventId, event);
+      return new UpdateResponse(HttpStatus.S_202_ACCEPTED);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
   }
 }

@@ -3,6 +3,7 @@
 ## Prerequisites
 
 Gradle 4.6 (do NOT use 5+ versions)
+
 PostgreSQL 12+
 
 ## Work with IntelliJ IDEA

@@ -14,8 +14,7 @@ import com.linkedin.r2.filter.compression.ServerCompressionFilter;
 import com.linkedin.r2.filter.logging.SimpleLoggingFilter;
 import com.linkedin.restli.server.RestLiConfig;
 import com.linkedin.restli.server.guice.GuiceRestliServlet;
-import io.event.api.db.PostgresqlDB;
-import io.event.api.db.UsersDB;
+import io.event.api.db.*;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 
@@ -48,7 +47,13 @@ public class GuiceServletConfig extends GuiceServletContextListener {
         new AbstractModule() {
           @Override
           protected void configure() {
-            bind(UsersDB.class).to(PostgresqlDB.class);
+            bind(UsersDB.class).to(PostgresqlUsersDB.class);
+          }
+        },
+        new AbstractModule() {
+          @Override
+          protected void configure() {
+            bind(EventsDB.class).to(PostgresqlEventsDB.class);
           }
         },
         new ServletModule() {
