@@ -4,13 +4,13 @@ import io.event.api.models.Event;
 
 import java.util.List;
 
-public interface EventsDB {
+public interface EventsDB extends SupplierByKey<Long, Event> {
 
-  Event get(long eventId);
+  Event get(Long eventId);
 
   long create(Event event);
 
-  void update(long eventId, Event event);
+  void update(Long eventId, Event event);
 
-  List<Event> findOrganizedEvents(long organizerId);
+  List<Event> findOrganizedEvents(Long organizerId);
 }

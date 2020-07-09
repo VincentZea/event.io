@@ -7,21 +7,21 @@ import io.event.api.models.UserEventRelation;
 
 import java.util.List;
 
-public interface UserEventRelationsDB {
+public interface UserEventRelationsDB extends SupplierByKey<CompoundKey, UserEventRelation> {
 
   UserEventRelation get(CompoundKey key);
 
   void update(CompoundKey key, UserEventRelation userEventRelation);
 
-  List<User> findRegisteredUsers(long eventId);
+  List<User> findRegisteredUsers(Long eventId);
 
-  List<User> findLikedUsers(long eventId);
+  List<User> findLikedUsers(Long eventId);
 
-  List<User> findSavedUsers(long eventId);
+  List<User> findSavedUsers(Long eventId);
 
-  List<Event> findRegisteredEvents(long userId);
+  List<Event> findRegisteredEvents(Long userId);
 
-  List<Event> findLikedEvents(long userId);
+  List<Event> findLikedEvents(Long userId);
 
-  List<Event> findSavedEvents(long userId);
+  List<Event> findSavedEvents(Long userId);
 }

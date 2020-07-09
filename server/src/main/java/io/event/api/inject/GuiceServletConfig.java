@@ -18,6 +18,12 @@ import io.event.api.db.*;
 import io.event.api.db.postgresql.PostgresqlEventsDB;
 import io.event.api.db.postgresql.PostgresqlUserEventRelationsDB;
 import io.event.api.db.postgresql.PostgresqlUsersDB;
+import io.event.api.validation.EventsValidator;
+import io.event.api.validation.UserEventRelationsValidator;
+import io.event.api.validation.beforeafter.BeforeAfterEventsValidator;
+import io.event.api.validation.beforeafter.BeforeAfterUserEventRelationsValidator;
+import io.event.api.validation.beforeafter.BeforeAfterUsersValidator;
+import io.event.api.validation.UsersValidator;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
 
@@ -53,6 +59,14 @@ public class GuiceServletConfig extends GuiceServletContextListener {
             bind(UsersDB.class).to(PostgresqlUsersDB.class);
             bind(EventsDB.class).to(PostgresqlEventsDB.class);
             bind(UserEventRelationsDB.class).to(PostgresqlUserEventRelationsDB.class);
+          }
+        },
+        new AbstractModule() {
+          @Override
+          protected void configure() {
+            bind(UsersValidator.class).to(BeforeAfterUsersValidator.class);
+            bind(EventsValidator.class).to(BeforeAfterEventsValidator.class);
+            bind(UserEventRelationsValidator.class).to(BeforeAfterUserEventRelationsValidator.class);
           }
         },
         new ServletModule() {

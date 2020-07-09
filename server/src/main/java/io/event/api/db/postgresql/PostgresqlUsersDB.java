@@ -23,7 +23,7 @@ public final class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
   }
 
   @Override
-  public User get(long userId) {
+  public User get(Long userId) {
     try (Connection conn = connect();
          PreparedStatement preparedStatement = conn.prepareStatement(SQL_GET_USER)) {
 
@@ -53,7 +53,7 @@ public final class PostgresqlUsersDB extends PostgresqlDB implements UsersDB {
   }
 
   @Override
-  public void update(long userId, User user) {
+  public void update(Long userId, User user) {
     try (Connection conn = connect();
          PreparedStatement preparedStatement = conn.prepareStatement(SQL_UPDATE_USER, Statement.RETURN_GENERATED_KEYS)) {
       setDBQueryParametersFromUser(preparedStatement, user);

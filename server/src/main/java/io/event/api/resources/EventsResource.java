@@ -1,6 +1,7 @@
 package io.event.api.resources;
 
 import com.linkedin.restli.common.HttpStatus;
+import com.linkedin.restli.common.PatchRequest;
 import com.linkedin.restli.server.CreateResponse;
 import com.linkedin.restli.server.PagingContext;
 import com.linkedin.restli.server.RestLiServiceException;
@@ -13,6 +14,7 @@ import com.linkedin.restli.server.resources.CollectionResourceTemplate;
 import io.event.api.db.EventsDB;
 import io.event.api.db.UserEventRelationsDB;
 import io.event.api.models.Event;
+import io.event.api.validation.EventsValidator;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -25,6 +27,9 @@ public class EventsResource extends CollectionResourceTemplate<Long, Event> {
 
   @Inject
   public UserEventRelationsDB _userEventRelationsDB;
+
+  @Inject
+  public EventsValidator _eventsValidator;
 
   @Override
   public Event get(Long eventId) {
@@ -82,6 +87,7 @@ public class EventsResource extends CollectionResourceTemplate<Long, Event> {
   @Override
   public CreateResponse create(Event event) {
     try {
+      _eventsValidator.validate(null, event);
       return new CreateResponse(_eventsDB.create(event));
     } catch (Exception e) {
       throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
@@ -91,7 +97,19 @@ public class EventsResource extends CollectionResourceTemplate<Long, Event> {
   @Override
   public UpdateResponse update(Long eventId, Event event) {
     try {
+      _eventsValidator.validate(eventId, event);
       _eventsDB.update(eventId, event);
+      return new UpdateResponse(HttpStatus.S_202_ACCEPTED);
+    } catch (Exception e) {
+      throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);
+    }
+  }
+
+  @Override
+  public UpdateResponse update(Long eventId, PatchRequest<Event> eventPatch) {
+    try {
+      Event patchedEvent = _eventsValidator.validate(eventId, eventPatch);
+      _eventsDB.update(eventId, patchedEvent);
       return new UpdateResponse(HttpStatus.S_202_ACCEPTED);
     } catch (Exception e) {
       throw new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR, e);

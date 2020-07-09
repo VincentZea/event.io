@@ -55,17 +55,17 @@ public final class PostgresqlUserEventRelationsDB extends PostgresqlDB implement
   }
 
   @Override
-  public List<User> findRegisteredUsers(long eventId) {
+  public List<User> findRegisteredUsers(Long eventId) {
     return findUsers(eventId, SQL_FIND_REGISTERED_USERS);
   }
 
   @Override
-  public List<User> findLikedUsers(long eventId) {
+  public List<User> findLikedUsers(Long eventId) {
     return findUsers(eventId, SQL_FIND_LIKED_USERS);
   }
 
   @Override
-  public List<User> findSavedUsers(long eventId) {
+  public List<User> findSavedUsers(Long eventId) {
     return findUsers(eventId, SQL_FIND_SAVED_USERS);
   }
 
@@ -86,17 +86,17 @@ public final class PostgresqlUserEventRelationsDB extends PostgresqlDB implement
   }
 
   @Override
-  public List<Event> findRegisteredEvents(long userId) {
+  public List<Event> findRegisteredEvents(Long userId) {
     return findEvents(userId, SQL_FIND_REGISTERED_EVENTS);
   }
 
   @Override
-  public List<Event> findLikedEvents(long userId) {
+  public List<Event> findLikedEvents(Long userId) {
     return findEvents(userId, SQL_FIND_LIKED_EVENTS);
   }
 
   @Override
-  public List<Event> findSavedEvents(long userId) {
+  public List<Event> findSavedEvents(Long userId) {
     return findEvents(userId, SQL_FIND_SAVED_EVENTS);
   }
 

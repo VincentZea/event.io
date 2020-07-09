@@ -22,7 +22,7 @@ public final class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
   }
 
   @Override
-  public Event get(long eventId) {
+  public Event get(Long eventId) {
     try (Connection conn = connect();
          PreparedStatement preparedStatement = conn.prepareStatement(SQL_GET_EVENT)) {
 
@@ -52,7 +52,7 @@ public final class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
   }
 
   @Override
-  public void update(long eventId, Event event) {
+  public void update(Long eventId, Event event) {
     try (Connection conn = connect();
          PreparedStatement preparedStatement = conn.prepareStatement(SQL_UPDATE_EVENT, Statement.RETURN_GENERATED_KEYS)) {
       setDBQueryParametersFromEvent(preparedStatement, event);
@@ -68,7 +68,7 @@ public final class PostgresqlEventsDB extends PostgresqlDB implements EventsDB {
   }
 
   @Override
-  public List<Event> findOrganizedEvents(long organizerId) {
+  public List<Event> findOrganizedEvents(Long organizerId) {
     try (Connection conn = connect();
          PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_ORGANIZED_EVENTS)) {
 
